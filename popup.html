@@ -1,0 +1,95 @@
+<!doctype html>
+<html class="chrome_h">
+<head>
+  <title>flustration extension</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="./css/common.css" type="text/css" />
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+  <script>
+    window.onload =  function() {
+      var response;
+      $.ajax({
+        url: "http://frustration.me/rest/timeline/new/",
+        type: "GET",
+        beforeSend : function() {
+          $("#list_target").html("loding....");
+        },
+
+        success : function(response) {
+            res = response;
+        },
+        complete : function(xhr, textStatus){
+          var items = [];
+          var errItems = [];
+          var hostname = 'http://frustration.me/';
+
+          $.each(res.data, function(key, val){
+            /*
+            var img = new Image();
+            img.src = hostname + val.icon_name;
+            if (img.naturalWidth < 10) {
+              val.icon_name = 'img/icon.gif';
+            }
+            img.src = val.image_s;
+            if (img.naturalWidth < 10) {
+              val.image_m = 'img/noimage_m.png';
+            }
+            */
+
+            var img = new Image();
+            img.src = hostname + val.icon_name;
+            if (img.naturalWidth < 10) {
+              val.icon_name = 'img/icon.gif';
+            }
+
+            var str = 
+              '<li>' +
+              '<a class="item" onclick="chrome.tabs.create({url: ' + "'" + hostname +'product/' + val.item_id + "'" + '});">' +
+              '<img src="' + val.image_m + '" width="75px" title="' + val.title + '" id="item_' + val.item_id + '"/>' +
+              '</a>' +
+              '<div class="user"><a onclick="chrome.tabs.create({url: ' + "'" + hostname + 'user/' + val.username + "'" + '});">' + 
+              '<img src="' + hostname + val.icon_name + '" title=""/></a>' + 
+              '</li>';
+            items.push(str);
+
+          });
+          $("#list_target").html(items.join(''));
+
+        }
+      });
+    }
+  </script>
+</head>
+<body class="chrome_b">
+
+<!--header-->
+<header>
+  <ul class="left">
+    <li>
+      <a onclick="chrome.tabs.create({url: 'http://frustration.me/'});">frustration.me</a></li>
+  </ul>
+  <ul class="right">
+    <li>新着一覧</li>
+  </ul>
+</header>
+
+<!--contents-->  
+<div id="contents">
+
+  <!--menu-->
+  <div class="menu"></div>
+
+
+  <!--get list-->
+  <div id="items">
+    <ul id="list_target"></ul>
+    <br clear="all"/>
+  </div>
+</div>
+
+<!--footer-->
+<footer>
+</footer>
+
+</body>
+</html>

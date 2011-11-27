@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<title></title>
+<script type="text/javascript">
+var parentId = chrome.contextMenus.create({
+    "title": "frustration.me で「%s」を検索",
+    "type": "normal",
+    "contexts" :  ["selection"]
+}, function(){
+    //callback
+});
+
+//----------------------------------------------------
+// submenu
+//----------------------------------------------------
+chrome.contextMenus.create({
+    "title": "Amazon",
+    "type": "normal",
+    "parentId" : parentId,
+    "contexts": ["selection"],
+    "onclick": function(info, tab){
+        searchIndex(info, tab, 'amazon');
+    }
+}, function(){
+   //callback
+});
+chrome.contextMenus.create({
+    "title": "Calamel",
+    "type": "normal",
+    "parentId" : parentId,
+    "contexts": ["selection"],
+    "onclick": function(info, tab){
+        searchIndex(info, tab, 'calamel');
+    }
+}, function(){
+   //callback
+});    
+chrome.contextMenus.create({
+    "title": "Yahoo Auction",
+    "type": "normal",
+    "parentId" : parentId,
+    "contexts": ["selection"],
+    "onclick": function(info, tab){
+        searchIndex(info, tab, 'yahooauction');
+    }
+}, function(){
+   //callback
+}); 
+chrome.contextMenus.create({
+    "title": "Rakuten",
+    "type": "normal",
+    "parentId" : parentId,
+    "contexts": ["selection"],
+    "onclick": function(info, tab){
+        searchIndex(info, tab, 'rakuten');
+    }
+}, function(){
+   //callback
+}); 
+chrome.contextMenus.create({
+    "title": "iTunes",
+    "type": "normal",
+    "parentId" : parentId,
+    "contexts": ["selection"],
+    "onclick": function(info, tab){
+        searchIndex(info, tab, 'itunes');
+    }
+}, function(){
+   //callback
+}); 
+
+//----------------------------------------------------
+// common
+//----------------------------------------------------
+function searchIndex(info, tab, type) {
+  var url = 'http://frustration.me';
+  if(info.selectionText) {
+    var keyword = encodeURIComponent(info.selectionText);
+    url += '/fuman/search/' + type + '/?ext=1&keyword=' + keyword;
+  }
+  chrome.tabs.create({
+    'url': url,
+    'selected': true
+  })
+  return ;
+}
+
+
+</script>
+</head>
+<body></body>
+</html>
