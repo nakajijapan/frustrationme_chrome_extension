@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="./css/common.css" type="text/css" />
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
   <script>
-    window.onload =  function() {
+    function getNewList() {
       var response;
       $.ajax({
         url: "http://frustration.me/rest/timeline/new/",
@@ -58,6 +58,9 @@
         }
       });
     }
+    window.onload =  function() {
+      getNewList();
+    }
   </script>
 </head>
 <body class="chrome_b">
@@ -72,6 +75,7 @@
     <li>新着一覧</li>
   </ul>
 </header>
+<!--/header-->
 
 <!--contents-->  
 <div id="contents">
