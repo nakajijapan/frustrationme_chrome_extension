@@ -6,6 +6,9 @@
   <link rel="stylesheet" href="./css/common.css" type="text/css" />
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
   <script>
+    //---------------------
+    // 新着一覧情報取得
+    //---------------------
     function getNewList() {
       var response;
       $.ajax({
@@ -58,9 +61,83 @@
         }
       });
     }
-    window.onload =  function() {
-      getNewList();
+
+    //---------------------
+    // 登録用
+    //---------------------
+    //TEST
+    var imgs = [
+      "http://www.blogcdn.com/www.engadget.com/media/2011/11/canonc300leadpicdantetktk.jpg",
+      "http://ecx.images-amazon.com/images/I/51U6BMd2%2BXL._SL160_.jpg",
+      "http://ecx.images-amazon.com/images/I/41f4SIXCTlL._SL160_.jpg"
+    ];
+  
+    var current = 0;
+    var length  = imgs.length;
+    gBg = chrome.extension.getBackgroundPage();
+    console.log(gBg.pageInfo);
+
+
+    function setContent() {
+
+      for (var i=0;i < imgs.length; imgs++) {
+        console.log("num = " + i);
+
+      }
+
     }
+
+    function nextImage() {
+      $(".img_list").find("img").each(function(i, elm){
+        if (current > length) {current = 0}
+        if (current == $(elm).attr('num')) {
+
+          $(elm).show();
+        }
+        else {
+          $(elm).hide();
+        }
+      });
+      current++;
+    }
+    function backImage() {
+      $(".img_list").find("img").each(function(i, elm){
+        if (current < 0) {current = length -1}
+        if (current == $(elm).attr('num')) {
+
+          $(elm).show();
+        }
+        else {
+          $(elm).hide();
+        }
+      });
+      current--;
+    }
+
+    //---------------------
+    // submit
+    //---------------------
+    function createFuman() {
+      console.log("submit");
+      $("input[name=btnCreate]").attr("disabled", "disabled");
+      $("#overlay").show().addClass("overlay");
+
+      setTimeout(function(){
+        $("input[name=btnCreate]").removeAttr("disabled");
+        $("#overlay").hide().removeClass("overlay");
+
+      }, 2000);
+    }
+
+    // on load event
+    window.onload =  function() {
+      //getNewList();
+
+      setContent();
+    }
+
+
+
   </script>
 </head>
 <body class="chrome_b">
@@ -77,18 +154,66 @@
 </header>
 <!--/header-->
 
-<!--contents-->  
+<!--contents-->
 <div id="contents">
 
   <!--menu-->
-  <div class="menu"></div>
+  <div id="create_fuman">
 
+    <!--img_area-->
+    <div class="img_area">
+      <!--img_list-->
+      <div class="img_list">
 
+        <img id="img_0" num="0" src="http:////www.blogcdn.com/www.engadget.com/media/2011/11/canonc300leadpicdantetktk.jpg">
+        <img id="img_1" num="1" src="http://ecx.images-amazon.com/images/I/51U6BMd2%2BXL._SL160_.jpg">
+        <img id="img_2" num="2" src="http://ecx.images-amazon.com/images/I/41f4SIXCTlL._SL160_.jpg">
+
+      </div>
+
+      <!--action-->
+      <div class="action">
+        <ul>
+          <li class="back"     id="act_back"><input type="button" name="back" value="＜＜" /></li>
+          <li class="current"  id="act_current">current</li>
+          <li class="next"     id="act_next"><input type="button" name="next" value="＞＞" /></li>
+        </ul>
+      </div>
+    </div>
+
+    <!--form-->
+    <div class="form">
+      <div class="element">
+        <span>タイトル</span><br />
+        <input type="text" name="title" value="">
+      </div>
+      <div class="element">
+        <span>価格</span><br />
+        <input type="text" name="price" value="">
+      </div>
+      <div class="element">
+        <span>コメント</span><br />
+        <textarea name="memo"></textarea>
+      </div>
+    </div>
+
+    <!--send-->
+    <br style="clear: both;" />
+    <div class="send">
+      <input type="button" name="btnCreate" value="カテゴリを追加する" onclick="createFuman();" class="button" />
+    </div>
+  </div>
+  
   <!--get list-->
   <div id="items">
     <ul id="list_target"></ul>
     <br clear="all"/>
   </div>
+</div>
+
+<!--overlay-->
+<div id="overlay" style="display: none;">
+  <label>もんもん...</label>
 </div>
 
 <!--footer-->

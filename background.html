@@ -69,7 +69,7 @@ chrome.contextMenus.create({
     }
 }, function(){
    //callback
-}); 
+});
 
 //----------------------------------------------------
 // common
@@ -87,7 +87,24 @@ function searchIndex(info, tab, type) {
   return ;
 }
 
+//----------------------------------------------------
+// get page info
+//----------------------------------------------------
+chrome.extension.onConnect.addListener(function(port) {
+  console.assert(port.name == "frustration");
+  port.onMessage.addListener(function(msg) {
+    // connect start
+    if(msg.status == "start"){
+      console.log("get title = " + msg.title);
 
+      // state
+      pageInfo = msg;
+    }
+    else{
+     console.log("else");
+    }
+  });
+});
 </script>
 </head>
 <body></body>
