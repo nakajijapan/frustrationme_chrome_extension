@@ -166,6 +166,7 @@ ul,li {
 }
   .chrome_h #create_fuman .img_area img{
     width: 160px;
+    max-height: 170px;
     display: block;
     position: absolute;
     left: 2px;
