@@ -263,3 +263,7 @@ ul,li {
     -webkit-transform: rotate(0deg);
   }
 }
+
+.chrome_h .overlay .block {
+  background-color: white;
+}

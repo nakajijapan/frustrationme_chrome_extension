@@ -8,8 +8,10 @@
   <script src="./js/common.js"></script>
   <script>
 // global value
+var gTargetUrl  = 'http://staging.frustration.me';
 var gCurrent = 0;
 var gLength  = 0;
+
 
 // get background
 var gBg = chrome.extension.getBackgroundPage();
@@ -77,6 +79,18 @@ window.onload =  function() {
         <span>コメント</span><br />
         <textarea name="memo" id="f_memo"></textarea>
       </div>
+      <div class="element">
+        <ul>
+          <li>
+            <span>状態</span><br />
+            <select name="status" id="f_status"></select>
+          </li>
+          <li>
+            <span>カテゴリリスト</span><br />
+            <select name="status" id="f_category"></select>
+          </li>
+        </ul>
+      </div>
     </div>
 
     <!--send-->
@@ -85,7 +99,7 @@ window.onload =  function() {
       <input type="button" name="btnCreate" value="登録する" onclick="createFuman();" class="button" />
     </div>
   </div>
-  
+
   <!--get list-->
   <div id="items">
     <ul id="list_target"></ul>
@@ -97,6 +111,12 @@ window.onload =  function() {
 <div id="overlay" style="display: none;">
   <label>もんもん...</label>
 </div>
+
+
+<div id="overlay_nologin" class="overlay" style="display: none;">
+  <div class="">こちらのサービスを利用するには<a onclick="chrome.tabs.create({url: 'http://frustration.me/'});">frustration.me</a>にログインしてください。</div>
+</div>
+<!--/overlay-->
 
 <!--footer-->
 <footer>

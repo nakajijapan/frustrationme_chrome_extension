@@ -5,63 +5,80 @@
 // 新着一覧情報取得
 //---------------------
 function getNewList() {
-  var response;
-  $.ajax({
-    url: "http://frustration.me/rest/timeline/new/",
-    type: "GET",
-    beforeSend : function() {
-      $("#list_target").html("loding....");
-    },
-
-    success : function(response) {
-        res = response;
-    },
-    complete : function(xhr, textStatus){
-      var items = [];
-      var errItems = [];
-      var hostname = 'http://frustration.me/';
-
-      $.each(res.data, function(key, val){
-
-        var img = new Image();
-        img.src = hostname + val.icon_name;
-        if (img.naturalWidth < 10) {
-          val.icon_name = 'img/icon.gif';
+    var response;
+    $.ajax({
+        url: "http://frustration.me/rest/timeline/new/",
+        type: "GET",
+        beforeSend : function() {
+            $("#list_target").html("loding....");
+        },
+        
+        success : function(response) {
+            res = response;
+        },
+        complete : function(xhr, textStatus){
+            var items = [];
+            var errItems = [];
+            var hostname = 'http://frustration.me/';
+            // image list
+            $.each(res.data, function(key, val){
+                
+                var img = new Image();
+                img.src = hostname + val.icon_name;
+                if (img.naturalWidth < 10) {
+                    val.icon_name = 'img/icon.gif';
+                }
+                
+                var str = 
+                    '<li>' +
+                    '<a class="item" onclick="chrome.tabs.create({url: ' + "'" + hostname +'product/' + val.item_id + "'" + '});">' +
+                    '<img src="' + val.image_m + '" width="75px" title="' + val.title + '" id="item_' + val.item_id + '"/>' +
+                    '</a>' +
+                    '<div class="user"><a onclick="chrome.tabs.create({url: ' + "'" + hostname + 'user/' + val.username + "'" + '});">' + 
+                    '<img src="' + hostname + val.icon_name + '" title=""/></a>' + 
+                    '</li>';
+                items.push(str);
+                
+            });
+            $("#list_target").html(items.join(''));
         }
-
-        var str = 
-          '<li>' +
-          '<a class="item" onclick="chrome.tabs.create({url: ' + "'" + hostname +'product/' + val.item_id + "'" + '});">' +
-          '<img src="' + val.image_m + '" width="75px" title="' + val.title + '" id="item_' + val.item_id + '"/>' +
-          '</a>' +
-          '<div class="user"><a onclick="chrome.tabs.create({url: ' + "'" + hostname + 'user/' + val.username + "'" + '});">' + 
-          '<img src="' + hostname + val.icon_name + '" title=""/></a>' + 
-          '</li>';
-        items.push(str);
-
-      });
-      $("#list_target").html(items.join(''));
-
-    }
-  });
+    });
 }
 
 //---------------------
 // 登録用
 //---------------------
+function checkLogin() {
+console.log('login check start');
+    var ret = true;
+    // status  list
+    $.getJSON( gTargetUrl + '/rest/auth/sesscheck', null, function(json, status){
+console.log(json);
+
+        if (json.code != 1) {
+            $('#overlay_nologin').addClass('overlay').show();
+            ret = false;
+        }
+    });
+    return ret;
+}
+
 // コンテンツ作成
 function setContent(pageInfo) {
-    console.log("start setContent");
+
+    var loginFlg = checkLogin();
+    if (loginFlg != true) {
+        return ;
+    }
+
     // set title
     $('#f_title').val(pageInfo.title);
-    console.log($('#f_title'));
-    console.log(pageInfo.imgurls);
+
     // set images
     var imageList = '';
     gLength   = pageInfo.imgurls.length;
-    console.log('length = ' + gLength);
+
     for (var i=0;i < gLength; i++) {
-        console.log(i + ' / ' + gLength);
         if (i==0) {
             imageList += '<img src="' + pageInfo.imgurls[i] + '" num="' + i + '" id="img_' + i + '" width="160px" />';
         }
@@ -70,7 +87,29 @@ function setContent(pageInfo) {
         }
     }
     $('.img_list').html(imageList);
-    console.log(imageList);
+
+    // status  list
+    $.getJSON( gTargetUrl + '/rest/master/statuses', null, function(json, status){
+        var options = '';
+        $.each(json.data, function(i,val){
+            options += '<option value="' + i + '">' + val + '</option>';
+        });
+        $('#f_status').append(options);
+    });
+
+    // category  list
+    $.getJSON( gTargetUrl + '/rest/settings/categorylist', null, function(json, status){
+        var options = '<option value="">----</option>>';
+
+        $.each(json.data, function(i,val){
+            options += '<option value="' + i + '">' + val.name + '</option>';
+        });
+        $('#f_category').append(options);
+    });
+
+    
+    // set image counter
+    $('#act_current').text( (gCurrent + 1) + ' / ' + gLength);
 }
 
 // next button
@@ -78,8 +117,6 @@ function nextImage() {
     gCurrent++;
     if (gCurrent >= gLength) {gCurrent = 0}  
     $(".img_list").find("img").each(function(i, elm){
-        console.log('c = ' + gCurrent);
-        console.log('l = ' + gLength);
         if (gCurrent == $(elm).attr('num')) {
             $(elm).show();
         }
@@ -87,6 +124,10 @@ function nextImage() {
             $(elm).hide();
         }
     });
+
+    // set image counter
+    $('#act_current').text( (gCurrent + 1) + ' / ' + gLength);
+
 }
 // back button
 function backImage() {
@@ -100,19 +141,49 @@ function backImage() {
             $(elm).hide();
         }
     });
+
+    // set image counter
+    $('#act_current').text( (gCurrent + 1) + ' / ' + gLength);
+
 }
 
 //---------------------
 // submit
 //---------------------
 function createFuman() {
-    console.log("submit");
-    $("input[name=btnCreate]").attr("disabled", "disabled");
-    $("#overlay").show().addClass("overlay");
-    
-    setTimeout(function(){
-        $("input[name=btnCreate]").removeAttr("disabled");
-        $("#overlay").hide().removeClass("overlay");
-        
-    }, 2000);
+    // global : pageInfo
+    var date = new Date();
+    var params = {
+        'type' : 5,
+        'category_id' : $('#f_category').val(),
+        'status' :      $('#f_status').val(),
+        'title' :       $('#f_title').val(),
+        'price' :       $('#f_price').val(),
+        'url' :         gBg.pageInfo.url,
+        'image_l' :     gBg.pageInfo.imgurls[ gCurrent ] ,
+        'date[Year]' :  date.getFullYear(),
+        'date[Month]' : date.getMonth(),
+        'date[Day]' :   date.getDay(),
+
+        'memo':         $('#f_memo').val()
+    }
+    console.log(params);
+/*
+    $.ajax({
+        url : gTargetUrl + '/rest/fuman/add',
+        //url : '/rest/fuman/add',
+        type: 'POST',
+        async : true, // 同期
+        data : params,
+        beforeSend : function(xhr) {
+            $("input[name=btnCreate]").attr("disabled", "disabled");
+            $("#overlay").show().addClass("overlay");
+        },
+        success : function(rs) {
+            $("input[name=btnCreate]").removeAttr("disabled");
+            $("#overlay").hide().removeClass("overlay");
+        }
+    });
+*/  
+    //setTimeout(function(){}, 2000);
 }
