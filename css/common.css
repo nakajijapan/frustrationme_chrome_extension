@@ -208,7 +208,13 @@ ul,li {
     width: 310px;
     height: 100px;
   }
-
+  .chrome_h #create_fuman .form .error{
+    border: 2px solid red;
+    background-color: #ffeeff;
+    padding : 4px;
+    color: red;
+    margin-bottom: 5px;
+  }
 
 .chrome_h #create_fuman .send {
   position: relative;
@@ -223,14 +229,16 @@ ul,li {
 /* overlay */
 .chrome_h .overlay {
   width: 530px;
+  /*height: 530px;*/
   height: 100%;
   position: absolute;
   top: 0;
   left: 0;
   display: table;
   z-index: 999;
-  background: rgb(0,0,0);
-  background: rgba(0,0,0,0.7);
+  /*background: rgb(0,0,0);
+  background: rgba(0,0,0,0.7);*/
+  background: rgba(247,81,105, 0.8);
 }
 .chrome_h .overlay label
 {
@@ -264,6 +272,25 @@ ul,li {
   }
 }
 
-.chrome_h .overlay .block {
+.chrome_h .overlay .nologin {
+  padding: 10px;
+  vertical-align: middle;
+  display: table-cell;
+  color: white;
+ /*
   background-color: white;
+  width: 250px;
+  margin: auto auto;
+  border-radius: 0 0 8px 8px;
+  padding: 10px;
+ */
 }
+.chrome_h .overlay .nologin a{
+  font-weight: bold;
+  color: red;
+}
+.chrome_h .overlay .nologin .login_button {
+  text-align: center;
+}
+
+

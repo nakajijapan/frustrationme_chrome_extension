@@ -48,15 +48,14 @@ function getNewList() {
 //---------------------
 // 登録用
 //---------------------
+// ログインチェック
 function checkLogin() {
-console.log('login check start');
     var ret = true;
     // status  list
     $.getJSON( gTargetUrl + '/rest/auth/sesscheck', null, function(json, status){
-console.log(json);
-
+        // error?
         if (json.code != 1) {
-            $('#overlay_nologin').addClass('overlay').show();
+            $('#overlay_nologin').show();
             ret = false;
         }
     });
@@ -100,10 +99,11 @@ function setContent(pageInfo) {
     // category  list
     $.getJSON( gTargetUrl + '/rest/settings/categorylist', null, function(json, status){
         var options = '<option value="">----</option>>';
-
-        $.each(json.data, function(i,val){
-            options += '<option value="' + i + '">' + val.name + '</option>';
-        });
+        if (json != null) {
+            $.each(json.data, function(i,val){
+                options += '<option value="' + val.id + '">' + val.name + '</option>';
+            });
+        }
         $('#f_category').append(options);
     });
 
@@ -165,25 +165,30 @@ function createFuman() {
         'date[Month]' : date.getMonth(),
         'date[Day]' :   date.getDay(),
 
-        'memo':         $('#f_memo').val()
+        'content':         $('#f_content').val()
     }
-    console.log(params);
-/*
+
+    // connect & create frustration's item
     $.ajax({
         url : gTargetUrl + '/rest/fuman/add',
-        //url : '/rest/fuman/add',
         type: 'POST',
         async : true, // 同期
         data : params,
         beforeSend : function(xhr) {
             $("input[name=btnCreate]").attr("disabled", "disabled");
-            $("#overlay").show().addClass("overlay");
+            $("#overlay").fadeIn(100);
         },
         success : function(rs) {
+            // error ?
+            if (rs.return != 1) {
+                $(".error").html(rs.message).show();
+            }
+            // success
+            else {
+                $("#create_fuman").html("アイテム<b>「" + params.title + "」</b>の登録に成功しました！");
+            }
             $("input[name=btnCreate]").removeAttr("disabled");
-            $("#overlay").hide().removeClass("overlay");
+            $("#overlay").fadeOut(1500);
         }
     });
-*/  
-    //setTimeout(function(){}, 2000);
 }

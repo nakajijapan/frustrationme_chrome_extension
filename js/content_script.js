@@ -15,8 +15,6 @@ function getPageInfo() {
     // get page title
     var title = document.getElementsByTagName('title')[0].firstChild.nodeValue.replace(/(^\s+)|(\s+$)/g, "");;
     var imgurls = getImgUrls();
-console.log('title = ' + title);
-console.log('url = ' + location.href);
     
     // send background
     var port = chrome.extension.connect({name: "frustration"});
@@ -26,12 +24,9 @@ console.log('url = ' + location.href);
         imgurls : imgurls,
         status : "start"
     });
-console.log("start post");
 
     port.onMessage.addListener(function(msg) {
-
         if (msg.status == "loading"){
-console.log("loading");
             port.postMessage({status: "loading"});
         }
     });
