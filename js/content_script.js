@@ -30,7 +30,6 @@ function getPageInfo() {
             port.postMessage({status: "loading"});
         }
     });
-
 }
 // get urls in image tag
 function getImgUrls() {

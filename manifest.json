@@ -1,7 +1,7 @@
 {
   "name": "frustration.me extension",
   "description" : "ソーシャルウィッシュリスト「frustration.me」のchrome extensionです。Amazon、楽天、カラメル、ヤフーオークション、iTunesの5つのAPIを利用してアイテムの検索を行うことができます。",
-  "version": "1.2.2",
+  "version": "2.0.0",
   "icons": {
     "16": "24.png",
     "24": "24.png",
