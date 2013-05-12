@@ -3,7 +3,7 @@
 //------------------------------------------
 getPageInfo();
 
-// タブが切り替わったときの処理 
+// タブが切り替わったときの処理
 chrome.extension.onRequest.addListener(
     function(request, sender, sendResponse) {
         getPageInfo();
@@ -15,11 +15,11 @@ function getPageInfo() {
     // get page title
     var title = document.getElementsByTagName('title')[0].firstChild.nodeValue.replace(/(^\s+)|(\s+$)/g, "");;
     var imgurls = getImgUrls();
-    
+
     // send background
     var port = chrome.extension.connect({name: "frustration"});
     port.postMessage({
-        title: title, 
+        title: title,
         url : location.href,
         imgurls : imgurls,
         status : "start"

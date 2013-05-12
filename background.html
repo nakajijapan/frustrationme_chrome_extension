@@ -5,7 +5,7 @@
 <title></title>
 <script type="text/javascript">
 var parentId = chrome.contextMenus.create({
-    "title": "frustration.me で「%s」を検索",
+    "title": "www.frustration.me で「%s」を検索",
     "type": "normal",
     "contexts" :  ["selection"]
 }, function(){
@@ -26,6 +26,7 @@ chrome.contextMenus.create({
 }, function(){
    //callback
 });
+/*
 chrome.contextMenus.create({
     "title": "Calamel",
     "type": "normal",
@@ -37,6 +38,7 @@ chrome.contextMenus.create({
 }, function(){
    //callback
 });
+*/
 chrome.contextMenus.create({
     "title": "Yahoo Auction",
     "type": "normal",
@@ -75,10 +77,15 @@ chrome.contextMenus.create({
 // common
 //----------------------------------------------------
 function searchIndex(info, tab, type) {
-  var url = 'http://frustration.me';
+
+  var url = 'http://www.frustration.me';
   if(info.selectionText) {
     var keyword = encodeURIComponent(info.selectionText);
-    url += '/fuman/search/' + type + '/?ext=1&keyword=' + keyword;
+    var category = 'All';
+    if (type == 'yahooauction' || type == 'rakuten') {
+      category = 'ALL';
+    }
+    url += '/fumans/search/?s_keywords=' + keyword + '&s_service_name=' + type + '&s_category=' + category;
   }
   chrome.tabs.create({
     'url': url,
@@ -91,10 +98,6 @@ function searchIndex(info, tab, type) {
 // get page info
 //----------------------------------------------------
 chrome.self.onConnect.addListener(function(port, name) {
-  // debug
-  //console.assert(port.name == "frustration");
-  //console.log("name = " + port.name);
-
   port.onMessage.addListener(function(msg, con) {
     pageInfo = msg;
   });

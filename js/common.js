@@ -12,7 +12,7 @@ function getNewList() {
         beforeSend : function() {
             $("#list_target").html("loding....");
         },
-        
+
         success : function(response) {
             res = response;
         },
@@ -22,23 +22,23 @@ function getNewList() {
             var hostname = 'http://frustration.me/';
             // image list
             $.each(res.data, function(key, val){
-                
+
                 var img = new Image();
                 img.src = hostname + val.icon_name;
                 if (img.naturalWidth < 10) {
                     val.icon_name = 'img/icon.gif';
                 }
-                
-                var str = 
+
+                var str =
                     '<li>' +
                     '<a class="item" onclick="chrome.tabs.create({url: ' + "'" + hostname +'product/' + val.item_id + "'" + '});">' +
                     '<img src="' + val.image_m + '" width="75px" title="' + val.title + '" id="item_' + val.item_id + '"/>' +
                     '</a>' +
-                    '<div class="user"><a onclick="chrome.tabs.create({url: ' + "'" + hostname + 'user/' + val.username + "'" + '});">' + 
-                    '<img src="' + hostname + val.icon_name + '" title=""/></a>' + 
+                    '<div class="user"><a onclick="chrome.tabs.create({url: ' + "'" + hostname + 'user/' + val.username + "'" + '});">' +
+                    '<img src="' + hostname + val.icon_name + '" title=""/></a>' +
                     '</li>';
                 items.push(str);
-                
+
             });
             $("#list_target").html(items.join(''));
         }
@@ -107,7 +107,7 @@ function setContent(pageInfo) {
         $('#f_category').append(options);
     });
 
-    
+
     // set image counter
     $('#act_current').text( (gCurrent + 1) + ' / ' + gLength);
 }
@@ -115,7 +115,7 @@ function setContent(pageInfo) {
 // next button
 function nextImage() {
     gCurrent++;
-    if (gCurrent >= gLength) {gCurrent = 0}  
+    if (gCurrent >= gLength) {gCurrent = 0}
     $(".img_list").find("img").each(function(i, elm){
         if (gCurrent == $(elm).attr('num')) {
             $(elm).show();
