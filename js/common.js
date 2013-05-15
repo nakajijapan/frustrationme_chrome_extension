@@ -165,8 +165,8 @@ function createFuman() {
         item : {
             service_code: 5,
             title:        $('#f_title').val(),
-            url:          gBg.pageInfo2.url,
-            image_l:      gBg.pageInfo2.imgurls[ gCurrent ]
+            url:          gBg.pageInfo.url,
+            image_l:      gBg.pageInfo.imgurls[ gCurrent ]
         },
         fuman : {
           status:         $('#f_status').val(),
@@ -184,15 +184,18 @@ function createFuman() {
             $("input[name=btnCreate]").attr("disabled", "disabled");
             $("#overlay").fadeIn(100);
         },
-        success : function(rs) {
+        success : function(rs,status,xhr) {
             // error ?
-            if (rs.return != 1) {
-                $(".error").html(rs.message).show();
-            }
+            console.log(status);
+            console.log(xhr);
+            //if (rs.errors) {
+            //    $(".error").html(rs.message).show();
+            //}
             // success
-            else {
-                $("#create_fuman").html("アイテムの登録に成功しました！");
-            }
+            //else {
+            //    $("#create_fuman").html("アイテムの登録に成功しました！");
+            //}
+            $("#create_fuman").html("アイテムの登録に成功しました！");
             $("input[name=btnCreate]").removeAttr("disabled");
             $("#overlay").fadeOut(1500);
         },

@@ -78,11 +78,11 @@ function searchIndex(info, tab, type) {
 //----------------------------------------------------
 // get page info
 //----------------------------------------------------
-chrome.extension.onConnect.addListener(function(port, name) {
-  port.onMessage.addListener(function(msg, con) {
-    pageInfo  = msg;
-    pageInfo2 = con;
 
+chrome.extension.onConnect.addListener(function(port, name) {
+  console.log(name);
+  port.onMessage.addListener(function(msg) {
+    pageInfo  = msg;
   });
 });
 
@@ -91,6 +91,7 @@ chrome.tabs.onSelectionChanged.addListener(function(tabid){
     chrome.tabs.getSelected(null, function(tab) {
         chrome.tabs.sendRequest(tab.id, {status: "changed"}, function(response) {
             // none
+            console.log("hogehoge");
         });
     });
 });
