@@ -75,7 +75,15 @@ function setContent(pageInfo) {
 
     // set images
     var imageList = '';
-    gLength   = pageInfo.imgurls.length;
+
+    // count images
+    if (pageInfo.imgurls === undefined) {
+        gLength = 0
+    }
+    else {
+        gLength = pageInfo.imgurls.length;
+    }
+
 
     for (var i=0;i < gLength; i++) {
         if (i==0) {
@@ -85,22 +93,23 @@ function setContent(pageInfo) {
             imageList += '<img src="' + pageInfo.imgurls[i] + '" num="' + i + '" id="img_' + i + '" width="160px" style="display:none" />';
         }
     }
+
     $('.img_list').html(imageList);
 
     // status  list
     $.getJSON( gTargetUrl + '/api/fumans/statuses.json', null, function(json, status){
         var options = '';
-        $.each(json.data, function(i,val){
+        $.each(json, function(i,val){
             options += '<option value="' + i + '">' + val + '</option>';
         });
         $('#f_status').append(options);
     });
 
     // category  list
-    $.getJSON( gTargetUrl + '/categories.json', null, function(json, status){
+    $.getJSON( gTargetUrl + '/settings/categories.json', null, function(json, status){
         var options = '<option value="">----</option>>';
         if (json != null) {
-            $.each(json.data, function(i,val){
+            $.each(json, function(i,val){
                 options += '<option value="' + val.id + '">' + val.name + '</option>';
             });
         }
@@ -156,8 +165,8 @@ function createFuman() {
         item : {
             service_code: 5,
             title:        $('#f_title').val(),
-            url:          gBg.pageInfo.url,
-            image_l:      gBg.pageInfo.imgurls[ gCurrent ]
+            url:          gBg.pageInfo2.url,
+            image_l:      gBg.pageInfo2.imgurls[ gCurrent ]
         },
         fuman : {
           status:         $('#f_status').val(),
@@ -167,7 +176,7 @@ function createFuman() {
 
     // connect & create frustration's item
     $.ajax({
-        url : gTargetUrl + '/fumans/create_with_item.json"',
+        url : gTargetUrl + '/fumans/create_with_item.json',
         type: 'POST',
         async : true, // 同期
         data : params,
@@ -186,6 +195,10 @@ function createFuman() {
             }
             $("input[name=btnCreate]").removeAttr("disabled");
             $("#overlay").fadeOut(1500);
+        },
+        error : function () {
+            alert('error');
+            $("#overlay").fadeOut();
         }
     });
 }

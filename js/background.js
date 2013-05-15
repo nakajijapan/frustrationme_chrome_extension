@@ -80,7 +80,9 @@ function searchIndex(info, tab, type) {
 //----------------------------------------------------
 chrome.extension.onConnect.addListener(function(port, name) {
   port.onMessage.addListener(function(msg, con) {
-    pageInfo = msg;
+    pageInfo  = msg;
+    pageInfo2 = con;
+
   });
 });
 

@@ -3,14 +3,31 @@
 var gTargetUrl  = 'http://www.frustration.me';
 var gCurrent = 0;
 var gLength  = 0;
+var gBg = null;
 
+chrome.runtime.getBackgroundPage(function(bg){
+  setContent(bg.pageInfo2);
+  gBg = bg;
+});
 
-// get background
-var gBg = chrome.extension.getBackgroundPage();
+$(document).ready(function(){
+  $('#act_back input').click(function(){
+    backImage();
+  });
 
-// on load event
-window.onload =  function() {
-  //getNewList();
-  // 現在タブから情報を取得する
-  setContent(gBg.pageInfo);
-}
+  $('#act_next input').click(function(){
+    nextImage();
+  });
+
+  $('#create_fuman').click(function(){
+    createFuman();
+  });
+
+  $('#login_page_link').click(function(){
+    chrome.tabs.create({url: 'http://www.frustration.me/'});
+  });
+  $('#login_page_link').click(function(){
+    chrome.tabs.create({url: 'http://www.frustration.me/'});
+  });
+
+});

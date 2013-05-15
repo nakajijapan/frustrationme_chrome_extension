@@ -44,11 +44,11 @@
       <div class="action">
         <ul>
           <li class="back"     id="act_back">
-            <input type="button" name="back" value="＜＜"  onclick="backImage();"/>
+            <input type="button" name="back" value="＜＜" />
           </li>
           <li class="current"  id="act_current">current</li>
           <li class="next"     id="act_next">
-            <input type="button" name="next" value="＞＞" onclick="nextImage();"/>
+            <input type="button" name="next" value="＞＞" />
           </li>
         </ul>
       </div>
@@ -80,7 +80,7 @@
     <!--send-->
     <br style="clear: both;" />
     <div class="send">
-      <input type="button" name="btnCreate" value="登録する" onclick="createFuman();" class="button" />
+      <input type="button" name="btnCreate" value="登録する" class="button" id="create_fuman" />
     </div>
   </div>
 
@@ -98,10 +98,10 @@
 
 
 <div id="overlay_nologin" class="overlay" style="display: none;">
-  <div class="nologin">こちらのサービスを利用するには<a onclick="chrome.tabs.create({url: 'http://www.frustration.me/'});">「www.frustration.me」</a>にログインしてからご利用ください。登録されましたアイテムは全てこちらに保存されていきます。
+  <div class="nologin">こちらのサービスを利用するには<a id="login_page_link">「www.frustration.me」</a>にログインしてからご利用ください。登録されましたアイテムは全てこちらに保存されていきます。
     <br />
     <div class="login_button">
-      <input type="button" name="btn" value=" ログイン画面へ " onclick="chrome.tabs.create({url: 'http://www.frustration.me/login'});" />
+      <input type="button" name="btn" value=" ログイン画面へ " id="login_page_button" />
     </div>
   </div>
 </div>
