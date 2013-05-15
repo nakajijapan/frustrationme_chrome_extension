@@ -5,10 +5,12 @@ var gCurrent = 0;
 var gLength  = 0;
 var gBg = null;
 
+window.onload = function() {
 chrome.runtime.getBackgroundPage(function(bg){
-  setContent(bg.pageInfo2);
   gBg = bg;
+  setContent(bg.pageInfo);
 });
+}
 
 $(document).ready(function(){
   $('#act_back input').click(function(){
@@ -19,7 +21,7 @@ $(document).ready(function(){
     nextImage();
   });
 
-  $('#create_fuman').click(function(){
+  $('#create_fuman_button').click(function(){
     createFuman();
   });
 
