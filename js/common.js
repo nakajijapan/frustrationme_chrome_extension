@@ -19,7 +19,7 @@ function getNewList() {
         complete : function(xhr, textStatus){
             var items = [];
             var errItems = [];
-            var hostname = 'http://frustration.me/';
+            var hostname = 'http://www.frustration.me/';
             // image list
             $.each(res.data, function(key, val){
 
@@ -52,9 +52,9 @@ function getNewList() {
 function checkLogin() {
     var ret = true;
     // status  list
-    $.getJSON( gTargetUrl + '/rest/auth/sesscheck', null, function(json, status){
+    $.getJSON( gTargetUrl + '/sessions/loggedin', null, function(json, status){
         // error?
-        if (json.code != 1) {
+        if (json.status != true) {
             $('#overlay_nologin').show();
             ret = false;
         }
@@ -88,7 +88,7 @@ function setContent(pageInfo) {
     $('.img_list').html(imageList);
 
     // status  list
-    $.getJSON( gTargetUrl + '/rest/master/statuses', null, function(json, status){
+    $.getJSON( gTargetUrl + '/api/fumans/statuses.json', null, function(json, status){
         var options = '';
         $.each(json.data, function(i,val){
             options += '<option value="' + i + '">' + val + '</option>';
@@ -97,7 +97,7 @@ function setContent(pageInfo) {
     });
 
     // category  list
-    $.getJSON( gTargetUrl + '/rest/settings/categorylist', null, function(json, status){
+    $.getJSON( gTargetUrl + '/categories.json', null, function(json, status){
         var options = '<option value="">----</option>>';
         if (json != null) {
             $.each(json.data, function(i,val){
@@ -152,25 +152,22 @@ function backImage() {
 //---------------------
 function createFuman() {
     // global : pageInfo
-    var date = new Date();
     var params = {
-        'type' : 5,
-        'category_id' : $('#f_category').val(),
-        'status' :      $('#f_status').val(),
-        'title' :       $('#f_title').val(),
-        'price' :       $('#f_price').val(),
-        'url' :         gBg.pageInfo.url,
-        'image_l' :     gBg.pageInfo.imgurls[ gCurrent ] ,
-        'date[Year]' :  date.getFullYear(),
-        'date[Month]' : date.getMonth(),
-        'date[Day]' :   date.getDay(),
-
-        'content':         $('#f_content').val()
+        item : {
+            service_code: 5,
+            title:        $('#f_title').val(),
+            url:          gBg.pageInfo.url,
+            image_l:      gBg.pageInfo.imgurls[ gCurrent ]
+        },
+        fuman : {
+          status:         $('#f_status').val(),
+          category_id:     $('#f_category').val()
+        }
     }
 
     // connect & create frustration's item
     $.ajax({
-        url : gTargetUrl + '/rest/fuman/add',
+        url : gTargetUrl + '/fumans/create_with_item.json"',
         type: 'POST',
         async : true, // 同期
         data : params,
@@ -185,7 +182,7 @@ function createFuman() {
             }
             // success
             else {
-                $("#create_fuman").html("アイテム<b>「" + params.title + "」</b>の登録に成功しました！");
+                $("#create_fuman").html("アイテムの登録に成功しました！");
             }
             $("input[name=btnCreate]").removeAttr("disabled");
             $("#overlay").fadeOut(1500);
