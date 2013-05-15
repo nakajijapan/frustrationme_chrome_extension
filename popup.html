@@ -4,27 +4,9 @@
   <title>flustration extension</title>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="./css/common.css" type="text/css" />
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+  <script src="./js/jquery.js"></script>
   <script src="./js/common.js"></script>
-  <script>
-// global value
-//var gTargetUrl  = 'http://www.frustration.dev';
-var gTargetUrl  = 'http://www.frustration.me';
-var gCurrent = 0;
-var gLength  = 0;
-
-
-// get background
-var gBg = chrome.extension.getBackgroundPage();
-
-// on load event
-window.onload =  function() {
-  //getNewList();
-  // 現在タブから情報を取得する
-  setContent(gBg.pageInfo);
-}
-
-  </script>
+  <script src="./js/popup.js"></script>
 </head>
 <body class="chrome_b">
 
@@ -40,8 +22,6 @@ window.onload =  function() {
     <li>不満一覧</li>
   </ul>
 -->
-
-
 </header>
 <!--/header-->
 
@@ -78,19 +58,11 @@ window.onload =  function() {
     <div class="form">
       <div class="error" style="display:none;"></div>
 
-
       <div class="element">
         <span>タイトル</span><br />
         <input type="text" name="title" value="" id="f_title">
       </div>
-      <div class="element">
-        <span>価格</span><br />
-        <input type="text" name="price" value="" id="f_price">
-      </div>
-      <div class="element">
-        <span>コメント</span><br />
-        <textarea name="content" id="f_content"></textarea>
-      </div>
+
       <div class="element">
         <ul>
           <li>
