@@ -1,4 +1,4 @@
-# Chrome Extension
+# Chrome Extension for www.frustration.me
 
 ## What is this?
 This is Chrome Extension for [http://frustration.me](http://frustration.me)
@@ -11,6 +11,3 @@ This is Chrome Extension for [http://frustration.me](http://frustration.me)
 ## creater
 * nakajijapan
   * http://twitter.com/nakajijapan
-
-
-
