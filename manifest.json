@@ -16,6 +16,13 @@
   "background": {
     "page": "background.html"
   },
+  "web_accessible_resources" : [
+    "js/jquery.js",
+    "js/content_script.js",
+    "js/common.js",
+    "js/background.js",
+    "js/popup.js"
+  ],
   "permissions" : [
     "tabs",
     "contextMenus",
