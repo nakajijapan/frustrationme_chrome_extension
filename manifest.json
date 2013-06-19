@@ -16,11 +16,6 @@
   "background": {
     "page": "background.html"
   },
-  "content_scripts" : [{
-     "matches" : ["http://*/*"],
-     "css" : ["css/common.css"],
-     "js" : ["js/content_script.js", "js/common.js", "js/popup.js", "js/background.js", "js/jquery.js"]
-  }],
   "permissions" : [
     "tabs",
     "contextMenus",
